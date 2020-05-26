@@ -40,6 +40,7 @@ O atributo `developerMessage` apresenta uma mensagem mais técnica, podendo ser 
 ## Detalhes da solução adotada
 
 **Classes de senhas**
+
 Com o objetivo de oferecer suporte à validação de diferentes categorias de senhas, a aplicação permite a criação de _classes de senhas_. Uma classe possui um conjunto de regras que a senha deve atender para ser considerada válida naquela classe.
 
 Inicialmente foi definida a classe NCPWR (Nine Chars Password Without Repetition), contendo as seguintes regras:
@@ -59,3 +60,24 @@ Para criar uma nova classe de senhas, é necessário cadastrá-la no banco e tam
 
 Caso seja necessário criar alguma regra diferente (por exemplo, uma regra para definir o número máximo de dígitos ou uma regra baseada em expressão regular), além de cadastrar a regra no banco, é preciso criar a sua implementação na aplicação.
 
+
+**Modelo de dados**
+
+As seguintes tabelas compõem o modelo de dados da aplicação:
+* `PASS_CLASS`: classes de senhas existentes na aplicação. O campo `RULE_NAME` é um acrônimo que também precisa ser criado no _enum_ `PassClassName`.
+* `RULE`: regras de validação implementadas. As regras são independentes das classes de senhas, podendo ser reutilizadas por várias classes. O campo `REJECT_MESSAGE` mantém a mensagem de erro a ser retornada para o usuário, caso a senha não atenda à respectiva regra. O campo `RULE_VALUE_TYPE` é utilizado para regras parametrizadas e indica o tipo de dados esperado do parâmetro. 
+* `CLASS_RULE`: lista de regras de cada classe de senhas. Nesta tabela são informados a ordem de aplicação das regras e seus valores (para regras parametrizadas).
+
+Como comentado anteriormente, a aplicação está configurada com um banco de dados embutido, para efeito de demonstração. As tabelas são criadas automaticamente pelo Flyway quando a aplicação é iniciada. Também foram incluídos nos scripts do Flyway comandos SQL para cadastrar a classe de senhas NCPWR e suas regras. 
+
+**Visão geral da arquitetura**
+
+A aplicação está organizada em camadas: _WEB controller_, serviço e repositórios. 
+
+Na camada do _controller_ foi criado um _Controller Advice_ para o tratamento de exceções, incluindo _log_ das mesmas. Na camada de serviço, os _services_ implementados não definem interface pois, tratando-se de um microserviço, entendemos não haver necessidade (a única implementação dos serviços apresentados é fornecida pela próprio API **passcheck**).
+
+A camada de repositórios foi implementada com JPA. Não foi feito tratamento transacional na camada de serviço pois os operações implementadas até o momento fazem apenas leitura no banco de dados.
+
+Foi criado um cache para manter em memória as classes de senhas existentes. Desta forma, melhoramos o desempenho da aplicação pois não é necessário carregar do banco de dados as classes e regras a cada execução do endpoint de validação. 
+
+Para facilitar o desenvolvimento e melhorar a legibilidade do código, bibliotecas de geração automática de código foram utilizadas (Lombok e MapStruct). 
