@@ -73,7 +73,7 @@ Como comentado anteriormente, a aplicação está configurada com um banco de da
 
 A aplicação está organizada em camadas: _WEB controller_, serviço e repositórios. 
 
-Na camada do _controller_ foi criado um _Controller Advice_ para o tratamento de exceções, incluindo _log_ das mesmas. Na camada de serviço, os _services_ implementados não definem interface pois, tratando-se de um microserviço, entendemos não haver necessidade (a única implementação dos serviços apresentados é fornecida pela próprio API **passcheck**).
+Na camada do _controller_ foi criado um _Controller Advice_ para o tratamento de exceções, incluindo _log_ das mesmas. Na camada de serviço, os _services_ implementados não definem interface pois, tratando-se de um microserviço, entendemos não haver necessidade (a única implementação dos serviços apresentados é fornecida pela própria API **passcheck**).
 
 A camada de repositórios foi implementada com JPA. Não foi feito tratamento transacional na camada de serviço pois os operações implementadas até o momento fazem apenas leitura no banco de dados.
 
