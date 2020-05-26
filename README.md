@@ -60,7 +60,6 @@ Para criar uma nova classe de senhas, é necessário cadastrá-la no banco e tam
 
 Caso seja necessário criar alguma regra diferente (por exemplo, uma regra para definir o número máximo de dígitos ou uma regra baseada em expressão regular), além de cadastrar a regra no banco, é preciso criar a sua implementação na aplicação.
 
-
 **Modelo de dados**
 
 As seguintes tabelas compõem o modelo de dados da aplicação:
@@ -81,3 +80,12 @@ A camada de repositórios foi implementada com JPA. Não foi feito tratamento tr
 Foi criado um cache para manter em memória as classes de senhas existentes. Desta forma, melhoramos o desempenho da aplicação pois não é necessário carregar do banco de dados as classes e regras a cada execução do endpoint de validação. 
 
 Para facilitar o desenvolvimento e melhorar a legibilidade do código, bibliotecas de geração automática de código foram utilizadas (Lombok e MapStruct). 
+
+**Testes automatizados**
+
+A estratégia de testes utilizada foi criar testes em cada camada da aplicação:
+* Testes de repositório: validam o mapeamento objeto-relacional das entidades e os métodos criados nos repositórios.
+* Testes na camada de serviço: são testes unitários que utilizam apenas JUnit (assim executam com melhor desempenho, por não carregarem o contexto do Spring) e criam _mocks_ das suas dependências.
+* Testes na camada de _controller_: foram criados com suporte da anotação `@WebMvcTest`, para carregar somente o contexto mínimo necessário do Spring, e também utilizam _mocks_.
+* Testes de integração: utilizam a anotação `@SpringBootTest` para carregar o contexto do Spring e executar testes que percorrem todas as camadas da aplicação.
+
