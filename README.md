@@ -19,7 +19,7 @@ A documentação da API é gerada automaticamente pelo Swagger, podendo ser aces
 Nesta versão inicial, somente um enpoint foi disponibilizado:
 > POST http://localhost:8080/passcheck/v1/validate
 
-Este endpoint espera uma requisição JSON no seguinte formato:
+Este endpoint espera uma requisição JSON no seguinte formato (favor declarar o _header_ `Content-Type: application/json`):
 > {
   	"password":"aBcdefghij&1234",
   	"passwordClass":"NCPWR"
