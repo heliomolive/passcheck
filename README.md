@@ -27,9 +27,9 @@ Este endpoint espera uma requisição JSON no seguinte formato:
 
 O parâmetro `password` trata-se da senha a ser validada e é obrigatório. O `passwordClass` é opcional e indica a classe de senhas a ser usada na validação (quando omitido, é utilizada a classe **NCPWR**).
 
-Caso a senha seja válida, o endpoint retorna o código HTTP 204 -- o corpo da resposta é vazio pois o próprio código HTTT já indica que a senha possui formato válido. 
+Caso a senha seja válida, o endpoint retorna o código HTTP 204 -- o corpo da resposta é vazio pois o próprio código HTTP já indica que a senha possui formato válido. 
 
-Se a senha for inválida, o retorno apresentará o código HTPP 422 com uma resposta JSON no seguinte formato:
+Se a senha for inválida, o retorno apresentará o código HTTP 422 com uma resposta JSON no seguinte formato:
 > {
       "developerMessage": "Invalid password format.",
       "userMessage": "Senha inválida, verifique as regras a seguir: [Não são permitidos caracteres repetidos]"
@@ -63,7 +63,7 @@ Caso seja necessário criar alguma regra diferente (por exemplo, uma regra para 
 **Modelo de dados**
 
 As seguintes tabelas compõem o modelo de dados da aplicação:
-* `PASS_CLASS`: classes de senhas existentes na aplicação. O campo `RULE_NAME` é um acrônimo que também precisa ser criado no _enum_ `PassClassName`.
+* `PASS_CLASS`: classes de senhas existentes na aplicação. O campo `PASS_CLASS_NAME` é um acrônimo que também precisa ser criado no _enum_ `PassClassName`.
 * `RULE`: regras de validação implementadas. As regras são independentes das classes de senhas, podendo ser reutilizadas por várias classes. O campo `REJECT_MESSAGE` mantém a mensagem de erro a ser retornada para o usuário, caso a senha não atenda à respectiva regra. O campo `RULE_VALUE_TYPE` é utilizado para regras parametrizadas e indica o tipo de dados esperado do parâmetro. 
 * `CLASS_RULE`: lista de regras de cada classe de senhas. Nesta tabela são informados a ordem de aplicação das regras e seus valores (para regras parametrizadas).
 
