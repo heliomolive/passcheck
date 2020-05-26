@@ -43,13 +43,19 @@ O atributo `developerMessage` apresenta uma mensagem mais técnica, podendo ser 
 Com o objetivo de oferecer suporte à validação de diferentes categorias de senhas, a aplicação permite a criação de _classes de senhas_. Uma classe possui um conjunto de regras que a senha deve atender para ser considerada válida naquela classe.
 
 Inicialmente foi definida a classe NCPWR (Nine Chars Password Without Repetition), contendo as seguintes regras:
-* Número mínimo de nove caracteres
-* Número máximo de vinte caracteres
-* Mínimo de um Ao menos 1 dígito
+* Mínimo de nove caracteres
+* Máximo de vinte caracteres
+* Mínimo de um dígito
 * Mínimo de uma letra minúscula
 * Mínimo de uma letra maiúscula
 * Mínimo de um caractere especial
 * Não possuir caracteres repetidos
 
-Tais regras compõem o conjunto solicitado para o projeto de validação de senhas, com a inclusão da regra de número máximo de caracteres.
+Tais regras compõem o conjunto solicitado para o projeto de validação de senhas, com inclusão da regra de número máximo de caracteres.
+
+A classe de senhas e suas regras são cadastradas no banco de dados e podem ser alteradas conforme desejado. Por exemplo, podemos alterar o número mínimo de dígitos ajustando o valor da respectiva regra no banco, ou mesmo remover da classe uma de suas regras.
+
+Para criar uma nova classe de senhas, é necessário cadastrá-la no banco e também no _enum_ `PassClassName`. A nova classe pode reutilizar as regras já existentes na aplicação, apenas definindo seus próprios valores no banco de dados.
+
+Caso seja necessário criar alguma regra diferente (por exemplo, uma regra para definir o número máximo de dígitos ou uma regra baseada em expressão regular), além de cadastrar a regra no banco, é preciso criar a sua implementação na aplicação.
 
