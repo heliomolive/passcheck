@@ -13,7 +13,7 @@
 
     <cache-template name="cacheTemplate">
         <expiry>
-            <ttl unit="minutes">3</ttl>
+            <ttl unit="hours">24</ttl>
         </expiry>
         <listeners>
             <listener>
