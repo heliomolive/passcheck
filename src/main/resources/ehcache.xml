@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xsi:schemaLocation="
+            http://www.ehcache.org/v3
+            http://www.ehcache.org/schema/ehcache-core-3.8.xsd">
+
+    <cache alias="passClassCache" uses-template="cacheTemplate">
+        <key-type>java.lang.String</key-type>
+        <value-type>hmo.passcheck.domain.dto.PassClassDto</value-type>
+    </cache>
+
+    <cache-template name="cacheTemplate">
+        <expiry>
+            <ttl unit="minutes">3</ttl>
+        </expiry>
+        <listeners>
+            <listener>
+                <class>hmo.passcheck.CacheEventLogger</class>
+                <event-firing-mode>SYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>ORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+                <events-to-fire-on>EVICTED</events-to-fire-on>
+            </listener>
+        </listeners>
+        <heap>3</heap>
+    </cache-template>
+</config>
