@@ -2,7 +2,6 @@ package hmo.passcheck.service;
 
 import hmo.passcheck.domain.dto.ClassRuleDto;
 import hmo.passcheck.domain.dto.PassClassDto;
-import hmo.passcheck.domain.enums.PassClassName;
 import hmo.passcheck.domain.exception.BadRequestException;
 import hmo.passcheck.domain.mapper.PassClassMapper;
 import hmo.passcheck.repository.PassClassRepository;
@@ -26,7 +25,7 @@ public class PassClassService {
     private PassClassMapper passClassMapper;
 
     @Cacheable(cacheNames = "passClassCache", key="#passClassName")
-    public PassClassDto findPassClass(PassClassName passClassName) {
+    public PassClassDto findPassClass(String passClassName) {
         PassClassDto passClassDto = passClassRepository
                 .findByPassClassName(passClassName)
                 .map( passClass -> passClassMapper.getPassClassDto(passClass) )

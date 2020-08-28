@@ -1,6 +1,5 @@
 package hmo.passcheck.domain.dto;
 
-import hmo.passcheck.domain.enums.PassClassName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.util.List;
 public class PassClassDto {
 
     private Long passClassId;
-    private PassClassName passClassName;
+    private String passClassName;
     private String passClassDesc;
     private List<ClassRuleDto> rules;
 }

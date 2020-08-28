@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static hmo.passcheck.domain.enums.PassClassName.NCPWR;
-
 public class PassClassMother {
 
     private PassClassMother() {}
@@ -20,8 +18,8 @@ public class PassClassMother {
     public static PassClass getPassClass(Long passClassId, List<ClassRule> classRules) {
         return PassClass.builder()
                 .passClassId(passClassId)
-                .passClassName(NCPWR)
-                .passClassDesc(NCPWR.getDescription())
+                .passClassName("NCPWR")
+                .passClassDesc("Nine Chars Password Without Repetition")
                 .createDate(LocalDateTime.now())
                 .rules(classRules)
                 .build();

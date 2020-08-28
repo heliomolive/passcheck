@@ -1,7 +1,7 @@
 package hmo.passcheck.service;
 
 import hmo.passcheck.domain.dto.PassClassDto;
-import hmo.passcheck.domain.enums.PassClassName;
+import hmo.passcheck.domain.exception.BadRequestException;
 import hmo.passcheck.domain.mapper.ClassRuleMapper;
 import hmo.passcheck.domain.mapper.PassClassMapper;
 import hmo.passcheck.mother.ClassRuleMother;
@@ -21,7 +21,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class PassClassServiceTest {
@@ -52,7 +54,7 @@ public class PassClassServiceTest {
         passClass.getRules().add(classRule2);
         passClass.getRules().add(classRule1);
 
-        when(passClassRepository.findByPassClassName(any(PassClassName.class))).thenReturn(Optional.of(passClass));
+        when(passClassRepository.findByPassClassName(anyString())).thenReturn(Optional.of(passClass));
 
         PassClassDto passClassDto = fixture.findPassClass(passClass.getPassClassName());
 
@@ -64,5 +66,12 @@ public class PassClassServiceTest {
         assertEquals(2, passClassDto.getRules().size());
         assertEquals(classRuleMapper.getClassRuleDto(classRule1), passClassDto.getRules().get(0));
         assertEquals(classRuleMapper.getClassRuleDto(classRule2), passClassDto.getRules().get(1));
+    }
+
+    @Test
+    public void validateWhenPassClassAcronymIsInvalid() {
+        when(passClassRepository.findByPassClassName(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(BadRequestException.class, () -> fixture.findPassClass("asdfg"));
     }
 }

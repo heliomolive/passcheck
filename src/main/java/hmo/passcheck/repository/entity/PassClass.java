@@ -1,6 +1,5 @@
 package hmo.passcheck.repository.entity;
 
-import hmo.passcheck.domain.enums.PassClassName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,8 +31,7 @@ public class PassClass {
     private Long passClassId;
 
     @Column(name = "PASS_CLASS_NAME", nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private PassClassName passClassName;
+    private String passClassName;
 
     @Column(name = "PASS_CLASS_DESC")
     private String passClassDesc;

@@ -1,6 +1,5 @@
 package hmo.passcheck.repository;
 
-import hmo.passcheck.domain.enums.PassClassName;
 import hmo.passcheck.domain.enums.RuleName;
 import hmo.passcheck.mother.ClassRuleMother;
 import hmo.passcheck.mother.PassClassMother;
@@ -20,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 public class ClassRuleRepositoryTest {
+
+    private static final String PASS_CLASS_NAME = "NCPWR";
 
     @Autowired
     private ClassRuleRepository fixture;
@@ -44,7 +45,7 @@ public class ClassRuleRepositoryTest {
 
     private PassClass findOrCreatePassClass() {
         Optional<PassClass> passClass = passClassRepository.findOne(Example.of(
-                PassClass.builder().passClassName(PassClassName.NCPWR).build()));
+                PassClass.builder().passClassName(PASS_CLASS_NAME).build()));
         return passClass.orElseGet(() -> passClassRepository.saveAndFlush(PassClassMother.getPassClass(null)));
     }
 

@@ -2,7 +2,6 @@ package hmo.passcheck.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hmo.passcheck.controller.request.VerifyPasswordRequest;
-import hmo.passcheck.domain.enums.PassClassName;
 import hmo.passcheck.domain.exception.UnprocessableEntityException;
 import hmo.passcheck.service.PassCheckService;
 import org.junit.jupiter.api.Test;
@@ -24,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PasscheckControllerTest {
 
     private static final String VALIDATE_URI = "/v1/validate";
+    private static final String PASS_CLASS_NAME = "NCPWR";
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,7 +37,7 @@ public class PasscheckControllerTest {
 
     @Test
     public void validate() throws Exception {
-        VerifyPasswordRequest request = new VerifyPasswordRequest("asdF@1234", PassClassName.NCPWR.toString());
+        VerifyPasswordRequest request = new VerifyPasswordRequest("asdF@1234", PASS_CLASS_NAME);
         mockMvc.perform(post(VALIDATE_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -46,7 +46,7 @@ public class PasscheckControllerTest {
 
     @Test
     public void validateWhenPasswordIsInvalid() throws Exception {
-        VerifyPasswordRequest request = new VerifyPasswordRequest("asdF@1234", PassClassName.NCPWR.toString());
+        VerifyPasswordRequest request = new VerifyPasswordRequest("asdF@1234", PASS_CLASS_NAME);
         String errorMessage = "Formato de senha inválido";
 
         doThrow(

@@ -18,6 +18,6 @@ public class VerifyPasswordRequest {
     @ApiModelProperty(value = "Password", required = true)
     private String password;
 
-    @ApiModelProperty(value = "Password class acronym (default NCPWR)")
+    @ApiModelProperty(value = "Password class acronym (example NCPWR)")
     private String passwordClass;
 }

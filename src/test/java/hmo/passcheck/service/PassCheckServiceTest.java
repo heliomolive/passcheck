@@ -1,7 +1,5 @@
 package hmo.passcheck.service;
 
-import hmo.passcheck.domain.enums.PassClassName;
-import hmo.passcheck.domain.exception.BadRequestException;
 import hmo.passcheck.domain.exception.UnprocessableEntityException;
 import hmo.passcheck.domain.mapper.PassClassMapper;
 import hmo.passcheck.mother.ClassRuleMother;
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class PassCheckServiceTest {
 
     private static final String USER_MESSAGE_PREFIX = "Senha inválida, verifique as regras a seguir: %s";
+    private static final String PASS_CLASS_NAME = "NCPWR";
 
     @InjectMocks
     private PassCheckService fixture;
@@ -48,10 +47,10 @@ public class PassCheckServiceTest {
     public void validate() {
         String password = "asdF1234!";
         PassClass passClass = createPassClass();
-        when(passClassService.findPassClass(any(PassClassName.class))).thenReturn(
+        when(passClassService.findPassClass(anyString())).thenReturn(
                 passClassMapper.getPassClassDto(passClass));
 
-        fixture.validate(password, PassClassName.NCPWR.toString());
+        fixture.validate(password, PASS_CLASS_NAME);
 
         verify(passClassService).findPassClass(eq(passClass.getPassClassName()));
     }
@@ -60,18 +59,13 @@ public class PassCheckServiceTest {
     public void validateWhenPasswordIsInvalid() {
         String password = "asdF12!";
         PassClass passClass = createPassClass();
-        when(passClassService.findPassClass(any(PassClassName.class))).thenReturn(
+        when(passClassService.findPassClass(anyString())).thenReturn(
                 passClassMapper.getPassClassDto(passClass));
 
         assertThrows(UnprocessableEntityException.class,
-                () -> fixture.validate(password, PassClassName.NCPWR.toString()));
+                () -> fixture.validate(password, PASS_CLASS_NAME));
 
         verify(passClassService).findPassClass(eq(passClass.getPassClassName()));
-    }
-
-    @Test
-    public void validateWhenPassClassAcronymIsInvalid() {
-        assertThrows(BadRequestException.class, () -> fixture.validate("asdfg", "INVALID"));
     }
 
     private PassClass createPassClass() {

@@ -2,8 +2,6 @@ package hmo.passcheck.service;
 
 import hmo.passcheck.domain.dto.ClassRuleDto;
 import hmo.passcheck.domain.dto.PassClassDto;
-import hmo.passcheck.domain.enums.PassClassName;
-import hmo.passcheck.domain.exception.BadRequestException;
 import hmo.passcheck.domain.exception.UnprocessableEntityException;
 import hmo.passcheck.service.rule.PassRule;
 import hmo.passcheck.service.rule.PassRuleFactory;
@@ -18,14 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 
 @Log4j2
 @Setter
 @Service
 public class PassCheckService {
-
-    private static final PassClassName DEFAULT_CLASS_NAME = PassClassName.NCPWR;
 
     @Autowired
     private PassClassService passClassService;
@@ -35,9 +30,7 @@ public class PassCheckService {
 
 
     public void validate(String password, String passClassAcronym) {
-        PassClassName passClassName = getPassClassName(passClassAcronym);
-
-        PassClassDto passClassDto = passClassService.findPassClass(passClassName);
+        PassClassDto passClassDto = passClassService.findPassClass(passClassAcronym);
 
         validate(password, passClassDto);
     }
@@ -70,16 +63,4 @@ public class PassCheckService {
         }
     }
 
-    private PassClassName getPassClassName(String acronym) {
-        if (isNull(acronym)) {
-            return DEFAULT_CLASS_NAME;
-        }
-        try {
-            return PassClassName.valueOf(acronym.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw BadRequestException.builder()
-                    .developerMessage(format("Invalid Pass Class Acronym [%s]", acronym))
-                    .build();
-        }
-    }
 }
