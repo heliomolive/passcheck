@@ -25,7 +25,7 @@ Este endpoint espera uma requisição JSON no seguinte formato (favor declarar o
   	"passwordClass":"NCPWR"
   }
 
-O parâmetro `password` trata-se da senha a ser validada e é obrigatório. O `passwordClass` é opcional e indica a classe de senhas a ser usada na validação (quando omitido, é utilizada a classe **NCPWR**).
+O parâmetro `password` trata-se da senha a ser validada e é obrigatório. O `passwordClass` (obrigatório) indica a classe de senhas a ser usada na validação (deve ser informado o acrônimo da classe, como, por exemplo, **NCPWR**).
 
 Caso a senha seja válida, o endpoint retorna o código HTTP 204 -- o corpo da resposta é vazio pois o próprio código HTTP já indica que a senha possui formato válido. 
 
@@ -52,18 +52,18 @@ Inicialmente foi definida a classe NCPWR (Nine Chars Password Without Repetition
 * Mínimo de um caractere especial
 * Não possuir caracteres repetidos
 
-Tais regras compõem o conjunto solicitado para o projeto de validação de senhas, com inclusão da regra de número máximo de caracteres.
+Tais regras compõem o conjunto criado inicialmente para o projeto de validação de senhas.
 
 A classe de senhas e suas regras são cadastradas no banco de dados e podem ser alteradas conforme desejado. Por exemplo, podemos alterar o número mínimo de dígitos ajustando o valor da respectiva regra no banco, ou mesmo remover da classe uma de suas regras.
 
-Para criar uma nova classe de senhas, é necessário cadastrá-la no banco e também no _enum_ `PassClassName`. A nova classe pode reutilizar as regras já existentes na aplicação, apenas definindo seus próprios valores no banco de dados.
+Para criar uma nova classe de senhas que aproveite as mesmas regras já cadastradas, é necessário apenas cadastrá-la no banco de dados (sem alteração da aplicação). A nova classe pode reutilizar as regras já existentes na aplicação, apenas definindo seus próprios valores no banco de dados.
 
-Caso seja necessário criar alguma regra diferente (por exemplo, uma regra para definir o número máximo de dígitos ou uma regra baseada em expressão regular), além de cadastrar a regra no banco, é preciso criar a sua implementação na aplicação.
+Caso seja necessário criar alguma regra diferente (por exemplo, uma regra baseada em expressão regular), além de cadastrar a regra no banco, é preciso criar a sua implementação na aplicação.
 
 **Modelo de dados**
 
 As seguintes tabelas compõem o modelo de dados da aplicação:
-* `PASS_CLASS`: classes de senhas existentes na aplicação. O campo `PASS_CLASS_NAME` é um acrônimo que também precisa ser criado no _enum_ `PassClassName`.
+* `PASS_CLASS`: classes de senhas existentes na aplicação. O campo `PASS_CLASS_NAME` é o acrônimo usado para identificar a classe de senhas nas requisições enviadas à API.
 * `RULE`: regras de validação implementadas. As regras são independentes das classes de senhas, podendo ser reutilizadas por várias classes. O campo `REJECT_MESSAGE` mantém a mensagem de erro a ser retornada para o usuário, caso a senha não atenda à respectiva regra. O campo `RULE_VALUE_TYPE` é utilizado para regras parametrizadas e indica o tipo de dados esperado do parâmetro. 
 * `CLASS_RULE`: lista de regras de cada classe de senhas. Nesta tabela são informados a ordem de aplicação das regras e seus valores (para regras parametrizadas).
 
